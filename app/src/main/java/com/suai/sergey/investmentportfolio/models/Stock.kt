@@ -10,7 +10,10 @@ import androidx.room.PrimaryKey
 data class Stock internal constructor(
     @PrimaryKey(autoGenerate = true) private var id: Int?,
     @ColumnInfo(name = "stock_uid") private var stock_uid: String,
-    @ColumnInfo(name = "stock_name") private var stock_name: String
+    @ColumnInfo(name = "stock_name") private var stock_name: String,
+    @ColumnInfo(name = "stock_price") private var stock_price: Double,
+    @ColumnInfo(name = "stock_price_min") private var stock_price_min: Double,
+    @ColumnInfo(name = "stock_price_max") private var stock_price_max: Double
 ) {
 
     fun setId(value: Int) {
