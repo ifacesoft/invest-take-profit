@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.suai.sergey.investmentportfolio.contract.MainContract
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
@@ -15,9 +14,6 @@ import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
 import android.os.Build
-
-
-
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -100,7 +96,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
             }
         }
-
     }
 
     fun Context.toast(message: CharSequence) =

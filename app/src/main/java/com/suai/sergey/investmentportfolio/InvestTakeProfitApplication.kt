@@ -27,6 +27,7 @@ class InvestTakeProfitApplication : Application() {
             retrofit!!.create(InvestApi::class.java) //Создаем объект, при помощи которого будем выполнять запросы
 
         roomDb = Room.databaseBuilder(this.applicationContext, InvestDataBase::class.java, "invest")
+            .allowMainThreadQueries()
             .build()
     }
 
