@@ -2,7 +2,9 @@ package com.suai.sergey.investmentportfolio.interactors
 
 import android.util.Log
 import com.suai.sergey.investmentportfolio.InvestTakeProfitApplication
+import com.suai.sergey.investmentportfolio.entity.Stock
 import com.suai.sergey.investmentportfolio.entity.StockApi
+import com.suai.sergey.investmentportfolio.exceptions.StocksLoadApiFailException
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +39,7 @@ class StockInteractor : Observable() {
     }
 
     private fun loadFromApi() {
-        val taskInteractor: StockInteractor = this;
+        val stockInteractor: StockInteractor = this;
         InvestTakeProfitApplication.api!!.getStocks("TASK").enqueue(
             object : Callback<StockApi> {
 
@@ -47,11 +49,14 @@ class StockInteractor : Observable() {
 
                 override fun onResponse(call: Call<StockApi>, response: Response<StockApi>) {
                     if (response.code() == 200) {
-                        response.body()
-                        // ?: throw TasksLoadApiFailException("Ошибка получения Taks из api, пустой список")
+                        val stockResponse: StockApi = response.body()
+                            ?: throw StocksLoadApiFailException("Ошибка получения Taks из api, пустой список")
+                        if (stockResponse.data.isEmpty()) {
+                            throw StocksLoadApiFailException("Пустой список data")
+                        }
 
                         //положили в базу и обсервер уведомили, отправили ему массив тасков
-                        // taskInteractor.updateObservers(taskInteractor.saveTasks(tasks))
+                        stockInteractor.updateObservers(stockInteractor.saveTasks(stockResponse.data))
                     }
 
                     if (response.code() == 404) {
@@ -62,25 +67,26 @@ class StockInteractor : Observable() {
         )
     }
 
-//    private fun saveTasks(taskResponse: List<TaskResponse>): List<Task> {
-//        // пусть так
-//        val taskEntities: ArrayList<Task> = ArrayList()
-//
-//        //TODO Вопрос с getId
-//        for (task in taskResponse) {
-//            taskEntities.add(Task(task.id, task.taskName))
-//        }
-//
-//        Repository.roomDb!!.taskDao().insertAll(taskEntities)
-//        return Repository.roomDb!!.taskDao().getAllTasks()
-//
-//    }
-//
-//    fun updateObservers(parcel: List<Task>) {
-//        Log.d(TAG, "Kourutines")
-//        setChanged()
-//        notifyObservers(parcel)
-//    }
+    private fun saveTasks(stockResponse: List<Stock>): List<com.suai.sergey.investmentportfolio.models.Stock> {
+        // пусть так
+        val stockEntities: ArrayList<com.suai.sergey.investmentportfolio.models.Stock> = ArrayList()
+
+        //TODO Вопрос с getId
+        for (stock in stockResponse) {
+            stockEntities.add(com.suai.sergey.investmentportfolio.models.Stock(null, stock.secid!!, stock.name!!))
+        }
+
+        InvestTakeProfitApplication.roomDb!!.stockDao().insertAllStocks(stockEntities)
+        return InvestTakeProfitApplication.roomDb!!.stockDao().getAllStocks()
+
+    }
+
+    //
+    fun updateObservers(parcel: List<com.suai.sergey.investmentportfolio.models.Stock>) {
+        Log.d(TAG, "UpdateObservers")
+        setChanged()
+        notifyObservers(parcel)
+    }
 
 
 }

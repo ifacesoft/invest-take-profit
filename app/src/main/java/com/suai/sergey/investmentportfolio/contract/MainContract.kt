@@ -1,6 +1,7 @@
 package com.suai.sergey.investmentportfolio.contract
 
-import com.suai.sergey.investmentportfolio.entity.Stock
+import com.suai.sergey.investmentportfolio.models.Stock
+
 
 interface MainContract {
 
@@ -12,6 +13,6 @@ interface MainContract {
     }
 
     interface View {
-        fun updateStockSpinner(spinners: List<Stock>)
+        fun updateStockSpinner(spinner: List<Stock>)
     }
 }
