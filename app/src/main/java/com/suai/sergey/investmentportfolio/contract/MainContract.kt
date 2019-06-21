@@ -7,7 +7,7 @@ interface MainContract {
     interface Presenter {
 
         fun loadStocks()
-        fun loadStock()
+        fun loadStockPrice()
 
     }
 

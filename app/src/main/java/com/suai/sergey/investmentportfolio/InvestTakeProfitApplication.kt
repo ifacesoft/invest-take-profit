@@ -18,7 +18,7 @@ class InvestTakeProfitApplication : Application() {
         super.onCreate()
 
         retrofit = Retrofit.Builder()
-            .baseUrl("http://oplotbot.ashwilliams.tk") //Базовая часть адреса
+            .baseUrl("http://moex.ifacesoft.ru") //Базовая часть адреса
             //   .addConverterFactory(createGsonConverter())
             .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
             .build()
