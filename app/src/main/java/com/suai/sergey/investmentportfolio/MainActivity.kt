@@ -12,46 +12,34 @@ import com.suai.sergey.investmentportfolio.contract.MainContract
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
+import android.R.attr.keySet
+
+
+class MainActivity : AppCompatActivity(), MainContract.View {
 
     lateinit var shortsName: String
     lateinit var longsName: String
     lateinit var costs: String
+    private var recyclerView: RecyclerView? = null
 
-class MainActivity : AppCompatActivity(), MainContract.View {
-    override fun updateStockSpinner(spinner: List<Stock>) {
-        spinner.get(1)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private val spinnerAdapter: ArrayAdapter<String> by lazy {
+        ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
 
-
+    private var spinnerData: List<Stock> = emptyList()
     private var mainPresenter: MainContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
-
-        mainPresenter = MainPresenter(this, StockInteractor());
-        (mainPresenter as MainPresenter).loadStocks()
-
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        mainPresenter = MainPresenter(this, StockInteractor());
+        (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
     }
 
     private fun dataList(): ArrayList<DataClass> {
         val list = ArrayList<DataClass>()
-//        list.add(DataClass("USDD", "ГАхзпромсясцо", "10000$$"))
-//        list.add(DataClass("USDD", "ГАхзпромсясцо", "10000$$"))
-//        list.add(DataClass("USDD", "ГАхзпромсясцо", "10000$$"))
-//        list.add(DataClass("USDD", "ГАхзпромсясцо", "10000$$"))
-//        list.add(DataClass("USDD", "ГАхзпромсясцо", "10000$$"))
-//        list.add(DataClass("USDD", "ГАхзпромсясцо", "10000$$"))
-
         return list
     }
 
@@ -69,13 +57,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private fun makeRecycleView() {
         val tvRecyclerView: TextView = findViewById(R.id.tv_recyclerView)
-
+        recyclerView = findViewById(R.id.recycler_view)
         if (dataList().size > 0) {
             tvRecyclerView.visibility = View.INVISIBLE
-            val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
-            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView!!.layoutManager = LinearLayoutManager(this)
             val adapter = DataClassAdapter(dataList())
-            recyclerView.adapter = adapter
+            recyclerView!!.adapter = adapter
         } else {
             tvRecyclerView.visibility = View.VISIBLE
         }
@@ -83,14 +70,16 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private fun makeSpinner() {
         val spinner: Spinner = findViewById(R.id.spinner_id)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerList().toArray())
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+        //spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerData)
+        (spinnerAdapter as ArrayAdapter<*>).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = spinnerAdapter
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (position != 0) {
-                    val item = parent.getItemAtPosition(position) as String
-                    toast(item)
+                    val item = spinnerData.get(position)
+                    toast(item.getStock_uid())
                 }
             }
 
@@ -103,4 +92,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     fun Context.toast(message: CharSequence) =
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    override fun updateStockSpinner(spinner: List<Stock>) {
+
+        spinnerData = spinner
+
+        spinnerAdapter.clear()
+        spinnerAdapter.addAll(spinner.map { it.getStock_name() })
+        spinnerAdapter.notifyDataSetChanged()
+
+    }
+
 }
+
+

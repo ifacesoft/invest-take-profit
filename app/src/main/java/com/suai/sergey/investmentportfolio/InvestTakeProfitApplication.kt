@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.facebook.stetho.Stetho
 import com.suai.sergey.investmentportfolio.dao.StockDao
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.repositories.InvestApi
@@ -16,6 +17,8 @@ class InvestTakeProfitApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        //инциализурру
+        Stetho.initializeWithDefaults(this);
 
         retrofit = Retrofit.Builder()
             .baseUrl("http://moex.ifacesoft.ru") //Базовая часть адреса
