@@ -7,6 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+<<<<<<< HEAD
     <Button
             android:text="Button"
             android:layout_width="wrap_content"
@@ -21,4 +22,6 @@
             android:id="@+id/button3" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/button2" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+=======
+>>>>>>> 9a68e558ceb8dc47cb61fded282f396f5054dfb4
 </androidx.constraintlayout.widget.ConstraintLayout>
