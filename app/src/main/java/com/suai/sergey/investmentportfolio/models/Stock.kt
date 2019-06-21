@@ -30,11 +30,11 @@ data class Stock internal constructor(
     }
 
     fun setStock_uid(value: String) {
-        stock_name = value
+        stock_uid = value
     }
 
     fun getStock_uid(): String {
-        return stock_name
+        return stock_uid
     }
 
 

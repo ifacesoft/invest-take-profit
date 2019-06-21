@@ -29,11 +29,9 @@ class MainPresenter(private var view: MainContract.View, private var stockIntera
             }
 
         }
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun loadStockPrice() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun loadStocks() {

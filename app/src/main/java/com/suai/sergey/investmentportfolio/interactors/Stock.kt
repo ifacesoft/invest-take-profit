@@ -73,7 +73,7 @@ class StockInteractor : Observable() {
 
         //TODO Вопрос с getId
         for (stock in stockResponse) {
-            stockEntities.add(com.suai.sergey.investmentportfolio.models.Stock(null, stock.secid!!, stock.name!!))
+            stockEntities.add(com.suai.sergey.investmentportfolio.models.Stock(null, stock.secid.toString(), stock.name.toString()))
         }
 
         InvestTakeProfitApplication.roomDb!!.stockDao().insertAllStocks(stockEntities)
