@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Investment portfolio</string>
+
+    <!--BUY FRAGMENT DIALOG-->
+    <string name="amount_textview">Input amount:</string>
+    <string name="price_textview">Input price:</string>
+    <string name="hint_input_amount">Amount</string>
+    <string name="hint_input_price">Price</string>
+    <string name="name">Name:</string>
+    <string name="final_text">NULL HA-HA</string>
+    <string name="btn_buy">buy</string>
+    <string name="btn_sell">sell</string>
+
 </resources>
