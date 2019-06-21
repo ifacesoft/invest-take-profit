@@ -23,6 +23,8 @@
             android:textColor="@color/colorBlack"
     />
 
+
+
     <TextView
             android:id="@+id/item_tv_cost"
             android:layout_width="wrap_content"
