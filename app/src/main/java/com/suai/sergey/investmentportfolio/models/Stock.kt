@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "invest_stock")
 data class Stock internal constructor(
-    @PrimaryKey(autoGenerate = true) private var id: Int,
-    @ColumnInfo(name = "stock_name") private var stock_name: String,
-    @ColumnInfo(name = "stock_uid") private var stock_uid: String
+    @PrimaryKey(autoGenerate = true) private var id: Int?,
+    @ColumnInfo(name = "stock_uid") private var stock_uid: String,
+    @ColumnInfo(name = "stock_name") private var stock_name: String
 ) {
 
     fun setId(value: Int) {
         id = value
     }
 
-    fun getId(): Int {
+    fun getId(): Int? {
         return id
     }
 
@@ -30,11 +30,11 @@ data class Stock internal constructor(
     }
 
     fun setStock_uid(value: String) {
-        stock_name = value
+        stock_uid = value
     }
 
     fun getStock_uid(): String {
-        return stock_name
+        return stock_uid
     }
 
 

@@ -2,6 +2,7 @@ package com.suai.sergey.investmentportfolio.entity
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.util.ArrayList
 
 class StockApi {
 
@@ -28,6 +29,6 @@ class StockApi {
     var count: Int? = null
     @SerializedName("data")
     @Expose
-    var data: List<Stock>? = null
+    var data: List<Stock> = ArrayList<Stock>()
 
 }
