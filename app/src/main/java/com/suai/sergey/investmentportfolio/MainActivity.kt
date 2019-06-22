@@ -13,11 +13,16 @@ import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
-import android.content.ServiceConnection
+import android.graphics.Canvas
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
+import android.os.Build
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
+import android.view.MotionEvent
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
+import com.suai.sergey.investmentportfolio.fragments.BuyDialogFragment
+import com.suai.sergey.investmentportfolio.fragments.SellDialogFragment
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 
@@ -49,6 +54,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
+        swipeListener()
 
         InvestTakeProfitApplication.observableStocks.listener = {
             updateRecylerViewItem()
@@ -87,6 +93,46 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
             }
         }
+    }
+
+    private fun swipeListener() {
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                var bought: Int = 1
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    if (bought == 1) {
+                        SellDialogFragment().show(supportFragmentManager, "sell")
+                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                    } else {
+                        recyclerViewAdapter.removeItem(viewHolder)
+                    }
+                } else if (direction == ItemTouchHelper.RIGHT) {
+                    if (bought == 1) {
+                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                    } else {
+                        BuyDialogFragment().show(supportFragmentManager, "sell")
+                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                    }
+                }
+
+            }
+
+
+
+        }
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     fun Context.toast(message: CharSequence) =

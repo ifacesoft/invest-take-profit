@@ -27,6 +27,15 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         holder.cost.text = dataClass.getStock_price().toString()
     }
 
+    fun refreshItem() {
+
+    }
+
+    fun removeItem(viewHolder: RecyclerView.ViewHolder) {
+        dataClassList.removeAt(viewHolder.adapterPosition)
+        notifyItemRemoved(viewHolder.adapterPosition)
+    }
+
     class DataClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val shortName: TextView = itemView.findViewById(R.id.item_tv_short_name)
         val longName: TextView = itemView.findViewById(R.id.item_tv_long_name)
