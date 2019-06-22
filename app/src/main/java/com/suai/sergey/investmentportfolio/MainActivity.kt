@@ -12,19 +12,19 @@ import com.suai.sergey.investmentportfolio.contract.MainContract
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
-import android.R.attr.keySet
+import com.suai.sergey.investmentportfolio.recycler_view.DataClass
+import com.suai.sergey.investmentportfolio.recycler_view.DataClassAdapter
 
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
-    lateinit var shortsName: String
-    lateinit var longsName: String
-    lateinit var costs: String
     private var recyclerView: RecyclerView? = null
-
+    private var dataList: List<DataClass> = emptyList()
     private val spinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
+
+    private var recyclerViewAdapter: DataClassAdapter? = null
 
     private var spinnerData: List<Stock> = emptyList()
     private var mainPresenter: MainContract.Presenter? = null
@@ -32,37 +32,21 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainPresenter = MainPresenter(this, StockInteractor());
+        mainPresenter = MainPresenter(this, StockInteractor())
         (mainPresenter as MainPresenter).loadStocks()
+
         makeRecycleView()
         makeSpinner()
-    }
-
-    private fun dataList(): ArrayList<DataClass> {
-        val list = ArrayList<DataClass>()
-        return list
-    }
-
-    private fun spinnerList(): ArrayList<String> {
-        val arrayList = ArrayList<String>()
-        arrayList.add(" ")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        return arrayList
     }
 
     private fun makeRecycleView() {
         val tvRecyclerView: TextView = findViewById(R.id.tv_recyclerView)
         recyclerView = findViewById(R.id.recycler_view)
-        if (dataList().size > 0) {
+        if (dataList.isNotEmpty()) {
             tvRecyclerView.visibility = View.INVISIBLE
             recyclerView!!.layoutManager = LinearLayoutManager(this)
-            val adapter = DataClassAdapter(dataList())
-            recyclerView!!.adapter = adapter
+            recyclerViewAdapter = DataClassAdapter(dataList)
+            recyclerView!!.adapter = recyclerViewAdapter
         } else {
             tvRecyclerView.visibility = View.VISIBLE
         }
@@ -78,7 +62,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (position != 0) {
-                    val item = spinnerData.get(position)
+                    val item = spinnerData[position]
                     toast(item.getStock_uid())
                 }
             }
@@ -87,7 +71,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
             }
         }
-
     }
 
     fun Context.toast(message: CharSequence) =
@@ -101,6 +84,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         spinnerAdapter.addAll(spinner.map { it.getStock_name() })
         spinnerAdapter.notifyDataSetChanged()
 
+    }
+
+    fun updateRecylerViewData(stock: Stock) {
+
+        recyclerViewAdapter!!.notifyDataSetChanged()
     }
 
 }

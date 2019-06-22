@@ -2,4 +2,7 @@
     <string name="app_name">Investment portfolio</string>
     <string name="spinner_name">Выберите компанию</string>
     <string name="recycler_view_text">Заполните портфель</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="start_me">Запусти меня</string>
 </resources>

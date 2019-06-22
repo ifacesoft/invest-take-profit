@@ -1,12 +1,13 @@
-package com.suai.sergey.investmentportfolio
+package com.suai.sergey.investmentportfolio.recycler_view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.suai.sergey.investmentportfolio.R
 
-class DataClassAdapter internal constructor(private val dataClassList: ArrayList<DataClass>):
+class DataClassAdapter internal constructor(private val dataClassList: List<DataClass>):
     RecyclerView.Adapter<DataClassAdapter.DataClassViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataClassViewHolder {
