@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.suai.sergey.investmentportfolio.R
 import com.suai.sergey.investmentportfolio.models.Stock
@@ -25,11 +26,8 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         val dataClass: Stock = this.dataClassList[position]
         holder.shortName.text = dataClass.getStock_uid()
         holder.longName.text = dataClass.getStock_name()
-        holder.cost.text = dataClass.getStock_price().toString()
-    }
-
-    fun refreshItem() {
-
+        val rubles = dataClass.getStock_price().toString()
+        holder.cost.text = "$rubles руб."
     }
 
     fun removeItem(viewHolder: RecyclerView.ViewHolder) {
@@ -41,5 +39,8 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         val shortName: TextView = itemView.findViewById(R.id.item_tv_short_name)
         val longName: TextView = itemView.findViewById(R.id.item_tv_long_name)
         val cost: TextView = itemView.findViewById(R.id.item_tv_cost)
+        val card: CardView = itemView.findViewById(R.id.cardview)
     }
+
+
 }

@@ -12,14 +12,10 @@ import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
-import android.graphics.Canvas
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.view.MotionEvent
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import com.suai.sergey.investmentportfolio.fragments.BuyDialogFragment
 import com.suai.sergey.investmentportfolio.fragments.SellDialogFragment
 import com.suai.sergey.investmentportfolio.interactors.BuyInteractor
@@ -33,9 +29,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var longsName: String
     lateinit var costs: String
 
-    private var recyclerView: RecyclerView? = null
+    var recyclerView: RecyclerView? = null
 
-    private val spinnerAdapter: ArrayAdapter<String> by lazy {
+    val spinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
 
@@ -136,23 +132,19 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                             recyclerViewAdapter.removeItem(viewHolder)
                         }
                     } else if (direction == ItemTouchHelper.RIGHT) {
-                        if (bought == 1) {
-                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                        } else {
-                            BuyDialogFragment().apply {
-                                arguments = Bundle().apply {
-                                    putString(
-                                        "key",
-                                        spinnerData.get(viewHolder.adapterPosition).getStock_uid()
-                                    )
-                                }
-                            }.show(supportFragmentManager, "sell")
-                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                        }
+
+                        BuyDialogFragment().apply {
+                            arguments = Bundle().apply {
+                                putString(
+                                    "key",
+                                    spinnerData.get(viewHolder.adapterPosition).getStock_uid()
+                                )
+                            }
+                        }.show(supportFragmentManager, "buy")
+                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+
                     }
-
                 }
-
 
             }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
