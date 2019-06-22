@@ -5,7 +5,7 @@ import com.suai.sergey.investmentportfolio.converters.Converter
 import java.util.*
 
 @Entity(
-    tableName = "invest_stock"
+    tableName = "invest_deal"
 )
 data class Deal internal constructor(
     @PrimaryKey(autoGenerate = true) private var id: Int?,
