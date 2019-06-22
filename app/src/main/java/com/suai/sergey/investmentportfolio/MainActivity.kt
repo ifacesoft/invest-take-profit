@@ -31,14 +31,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
 
-    private var recyclerViewData: ArrayList<Stock> = ArrayList<Stock>()
+    var recyclerViewData: ArrayList<Stock> = ArrayList<Stock>()
 
     private val recyclerViewAdapter: DataClassAdapter by lazy {
         DataClassAdapter(recyclerViewData)
     }
 
     private var spinnerData: List<Stock> = emptyList()
-    private var mainPresenter: MainContract.Presenter? = null
+    var mainPresenter: MainContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,4 +126,5 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             }
         }
     }
+
 }
