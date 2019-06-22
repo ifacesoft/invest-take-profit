@@ -13,7 +13,12 @@ import androidx.room.Room
 import com.suai.sergey.investmentportfolio.InvestDataBase
 import com.suai.sergey.investmentportfolio.MainActivity
 import com.suai.sergey.investmentportfolio.R
+import com.suai.sergey.investmentportfolio.entity.StockPriceApi
+import com.suai.sergey.investmentportfolio.exceptions.StocksLoadApiFailException
 import com.suai.sergey.investmentportfolio.repositories.InvestApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -42,6 +47,40 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
         while (true) {
             synchronized(this) {
                 try {
+                    val favoriteStocks = roomDb.stockDao().getFavoriteStocks()
+
+                    for (stock in favoriteStocks) {
+                        api.getStockPrice(stock.getStock_uid()).enqueue(
+                            object : Callback<StockPriceApi> {
+                                override fun onFailure(call: Call<StockPriceApi>, t: Throwable) {
+                                    throw t
+                                }
+
+                                override fun onResponse(call: Call<StockPriceApi>, response: Response<StockPriceApi>) {
+                                    if (response.code() == 200) {
+                                        val stockPriceApi: StockPriceApi = response.body()
+                                            ?: throw StocksLoadApiFailException("Ошибка получения Taks из api, пустой список")
+                                        if (stockPriceApi.data == null) {
+                                            throw StocksLoadApiFailException("пустой")
+                                        }
+
+                                        val stockPrice = stockPriceApi.data
+
+                                        roomDb.stockDao().updatePrice(
+                                            stockPrice?.security!!,
+                                            stockPrice.price!!.toDouble(),
+                                            stockPrice.datetime.toString()
+                                        )
+                                    }
+
+                                    if (response.code() == 404) {
+                                        //throw TasksLoadApiFailException("Не найдено ничего!")
+                                    }
+                                }
+                            }
+                        )
+                    }
+
                     NotificationManagerCompat.from(this).apply {
                         builder
                             .setContentTitle("Цены на акции")

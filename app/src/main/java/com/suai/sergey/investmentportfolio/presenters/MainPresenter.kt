@@ -38,7 +38,6 @@ class MainPresenter(
                 @Suppress("UNCHECKED_CAST")
                 view.updateRecylerViewItem()
             }
-
         }
     }
 
@@ -46,7 +45,6 @@ class MainPresenter(
         stockPriceInteractor.addObserver(this)
         stockPriceInteractor.loadData(uid)
     }
-
 
     override fun loadStocks() {
         stockInteractor.addObserver(this)
