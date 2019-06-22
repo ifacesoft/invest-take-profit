@@ -1,6 +1,5 @@
 package com.suai.sergey.investmentportfolio
 
-import android.content.ComponentName
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +24,7 @@ import com.suai.sergey.investmentportfolio.fragments.BuyDialogFragment
 import com.suai.sergey.investmentportfolio.fragments.SellDialogFragment
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
+import com.suai.sergey.investmentportfolio.recycler_view.DataClassAdapter
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
