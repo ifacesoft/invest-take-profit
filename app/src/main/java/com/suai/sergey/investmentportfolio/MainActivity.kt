@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     if (bought == 1) {
                         recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                     } else {
-                        BuyDialogFragment().show(supportFragmentManager, "sell")
+                        BuyDialogFragment().show(supportFragmentManager, "buy")
                         recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                     }
                 }
@@ -157,5 +157,4 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
 
     }
-
 }

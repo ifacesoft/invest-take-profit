@@ -1,9 +1,12 @@
 package com.suai.sergey.investmentportfolio
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.suai.sergey.investmentportfolio.models.Stock
 
@@ -27,10 +30,6 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         holder.cost.text = dataClass.getStock_price().toString()
     }
 
-    fun refreshItem() {
-
-    }
-
     fun removeItem(viewHolder: RecyclerView.ViewHolder) {
         dataClassList.removeAt(viewHolder.adapterPosition)
         notifyItemRemoved(viewHolder.adapterPosition)
@@ -40,5 +39,8 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         val shortName: TextView = itemView.findViewById(R.id.item_tv_short_name)
         val longName: TextView = itemView.findViewById(R.id.item_tv_long_name)
         val cost: TextView = itemView.findViewById(R.id.item_tv_cost)
+        val card: CardView = itemView.findViewById(R.id.cardview)
     }
+
+
 }
