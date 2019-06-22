@@ -1,12 +1,15 @@
 package com.suai.sergey.investmentportfolio.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.suai.sergey.investmentportfolio.MainActivity
 import com.suai.sergey.investmentportfolio.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.sell_dialog_fragment_layout.view.*
 
 class SellDialogFragment : DialogFragment() {
@@ -25,6 +28,9 @@ class SellDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.button.setOnClickListener {
+            var str = arguments?.getString("key")
+            (activity as MainActivity).mainPresenter?.sellDeal(str!!)
+
             if (!view.amount.text?.isBlank()!! && !view.price.text?.isBlank()!!) {
                 // ЗАПИСЫВАЕМ ПОКУПКУ В БАЗУ
                 val amount: Int = view.amount.text.toString().toInt()

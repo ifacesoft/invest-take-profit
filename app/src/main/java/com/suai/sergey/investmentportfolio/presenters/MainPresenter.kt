@@ -20,12 +20,12 @@ class MainPresenter(
     MainContract.Presenter, Observer {
     override fun sellDeal(uid: String) {
         buyInteractor.addObserver(this)
-        buyInteractor.buyDeal()
+        buyInteractor.sellDeal(uid)
     }
 
     override fun buyDeal(uid: String) {
         buyInteractor.addObserver(this)
-        buyInteractor.sellDeal()
+        buyInteractor.buyDeal(uid)
     }
 
     private val TAG = "Invest_MainContract"

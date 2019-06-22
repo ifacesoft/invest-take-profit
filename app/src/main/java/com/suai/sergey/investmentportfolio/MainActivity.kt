@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         DataClassAdapter(recyclerViewData)
     }
 
-    private var spinnerData: List<Stock> = emptyList()
+    var spinnerData: List<Stock> = emptyList()
     var mainPresenter: MainContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,41 +106,55 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     private fun swipeListener() {
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        val itemTouchHelperCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                var bought: Int = 1
-
-                if (direction == ItemTouchHelper.LEFT) {
-                    if (bought == 1) {
-                        SellDialogFragment().show(supportFragmentManager, "sell")
-                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                    } else {
-                        recyclerViewAdapter.removeItem(viewHolder)
-                    }
-                } else if (direction == ItemTouchHelper.RIGHT) {
-                    if (bought == 1) {
-                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                    } else {
-                        BuyDialogFragment().show(supportFragmentManager, "sell")
-                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                    }
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
                 }
 
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                    var bought: Int = 1
+
+                    if (direction == ItemTouchHelper.LEFT) {
+                        if (bought == 1) {
+                            SellDialogFragment().apply {
+                                arguments = Bundle().apply {
+                                    putString(
+                                        "key",
+                                        spinnerData.get(viewHolder.adapterPosition).getStock_uid()
+                                    )
+                                }
+                            }.show(supportFragmentManager, "sell")
+                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                        } else {
+                            recyclerViewAdapter.removeItem(viewHolder)
+                        }
+                    } else if (direction == ItemTouchHelper.RIGHT) {
+                        if (bought == 1) {
+                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                        } else {
+                            BuyDialogFragment().apply {
+                                arguments = Bundle().apply {
+                                    putString(
+                                        "key",
+                                        spinnerData.get(viewHolder.adapterPosition).getStock_uid()
+                                    )
+                                }
+                            }.show(supportFragmentManager, "sell")
+                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                        }
+                    }
+
+                }
+
+
             }
-
-
-
-        }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }

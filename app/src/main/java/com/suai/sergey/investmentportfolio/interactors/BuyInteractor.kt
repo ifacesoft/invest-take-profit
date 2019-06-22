@@ -20,10 +20,10 @@ class BuyInteractor : Observable() {
         }
     }
 
-    fun buyDeal() = scope.launch {
+    fun buyDeal(uid: String) = scope.launch {
         // (2)
         try {
-            makeDeal(true)
+            makeDeal(true, uid)
             this@BuyInteractor.getTasks().await()
         } catch (e: Exception) {
             Log.d(TAG, "Exception OMFG!")
@@ -31,10 +31,10 @@ class BuyInteractor : Observable() {
         }
     }
 
-    fun sellDeal() = scope.launch {
+    fun sellDeal(uid: String) = scope.launch {
         // (2)
         try {
-            makeDeal(false)
+            makeDeal(false, uid)
             this@BuyInteractor.getTasks().await()
         } catch (e: Exception) {
             Log.d(TAG, "Exception OMFG!")
@@ -42,9 +42,9 @@ class BuyInteractor : Observable() {
         }
     }
 
-    private fun makeDeal(flagBuy: Boolean) {
+    private fun makeDeal(flagBuy: Boolean, uid: String) {
         val deal: Deal = if (flagBuy) {
-            Deal(null, "SBER", Date(), 250.0, 10, (10 * 250.0), 0.00)
+            Deal(null, uid, Date(), 250.0, 10, (10 * 250.0), 0.00)
         } else {
             Deal(null, "SBER", Date(), 300.0, 10, 0.00, (10 * 300.0))
         }
