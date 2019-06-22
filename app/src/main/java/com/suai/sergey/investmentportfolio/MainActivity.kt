@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun refreshRecycerView(stocks: List<Stock>) {
         if (!stocks.isEmpty()) {
             Handler(Looper.getMainLooper()).post {
+                recyclerViewData.clear()
                 recyclerViewData.addAll(stocks)
                 recyclerViewAdapter.notifyDataSetChanged()
             }
