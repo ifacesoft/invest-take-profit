@@ -19,9 +19,7 @@ class MainPresenter(
 
     private val TAG = "Invest_MainContract"
 
-
     override fun update(obeservable: Observable?, parcel: Any?) {
-
         Log.d(TAG, "Updated")
 
         if (Looper.myLooper() == Looper.getMainLooper()) {
@@ -45,8 +43,6 @@ class MainPresenter(
                 @Suppress("UNCHECKED_CAST")
                 view.refreshRecycerView((parcel as List<Stock>))
             }
-
-
         }
     }
 
@@ -61,8 +57,8 @@ class MainPresenter(
     }
 
     override fun refreshRecyclerView() {
+        Log.d("myLogs", "refreshRecyclerView")
         refreshingInteractor.addObserver(this)
         refreshingInteractor.loadData()
-
     }
 }

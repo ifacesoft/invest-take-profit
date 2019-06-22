@@ -21,10 +21,25 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.os.IBinder
+import android.os.Binder
+import com.suai.sergey.investmentportfolio.InvestTakeProfitApplication
+
 
 class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName) {
     val LOG_TAG = "myLogs"
     val ONGOING_NOTIFICATION_ID = 1
+
+    private val mBinder = LocalBinder()
+    private var activity = null
+
+    var mAllowRebind: Boolean = false // indicates whether onRebind should be used
+
+    inner class LocalBinder : Binder() {
+        internal// Return this instance of LocalService so clients can call public methods
+        val service: UpdateCurrentPrices
+            get() = this@UpdateCurrentPrices
+    }
 
     override fun onHandleIntent(intent: Intent) {
         val retrofit = Retrofit.Builder()
@@ -50,9 +65,12 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
                     val favoriteStocks = roomDb.stockDao().getFavoriteStocks()
 
                     for (stock in favoriteStocks) {
+                        Log.d(LOG_TAG, "onHandleIntent getStockPrices " + System.currentTimeMillis())
+
                         api.getStockPrice(stock.getStock_uid()).enqueue(
                             object : Callback<StockPriceApi> {
                                 override fun onFailure(call: Call<StockPriceApi>, t: Throwable) {
+
                                     throw t
                                 }
 
@@ -66,11 +84,15 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
 
                                         val stockPrice = stockPriceApi.data
 
+                                        Log.d(LOG_TAG, "onHandleIntent price " + stockPrice.toString())
+
                                         roomDb.stockDao().updatePrice(
                                             stockPrice?.security!!,
                                             stockPrice.price!!.toDouble(),
                                             stockPrice.datetime.toString()
                                         )
+
+                                        InvestTakeProfitApplication.observableStocks.update = true
                                     }
 
                                     if (response.code() == 404) {
@@ -110,7 +132,7 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
         Log.d(LOG_TAG, "onDestroy")
     }
 
-    fun getBuilder(): NotificationCompat.Builder {
+    private fun getBuilder(): NotificationCompat.Builder {
         var CHANNEL_ID = ""
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -134,5 +156,20 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
             .setContentTitle("Цены на акции")
             .setContentText("Объявлен год роста акций ЛУКОЙЛа")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
+        // A client is binding to the service with bindService()
+        return mBinder
+    }
+
+    override fun onUnbind(intent: Intent): Boolean {
+        // All clients have unbound with unbindService()
+        return mAllowRebind
+    }
+
+    override fun onRebind(intent: Intent) {
+        // A client is binding to the service with bindService(),
+        // after onUnbind() has already been called
     }
 }

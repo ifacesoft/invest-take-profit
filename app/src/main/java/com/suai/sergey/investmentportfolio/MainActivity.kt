@@ -1,5 +1,6 @@
 package com.suai.sergey.investmentportfolio
 
+import android.content.ComponentName
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,9 +13,10 @@ import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
+import android.content.ServiceConnection
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
-import android.os.Build
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
@@ -47,6 +49,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
+
+        InvestTakeProfitApplication.observableStocks.listener = {
+            updateRecylerViewItem()
+        }
 
         startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
     }
@@ -112,7 +118,5 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }
-
     }
-
 }

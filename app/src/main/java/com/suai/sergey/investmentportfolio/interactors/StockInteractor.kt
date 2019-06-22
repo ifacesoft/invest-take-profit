@@ -22,7 +22,7 @@ class StockInteractor : Observable() {
     suspend fun getTasks(): Deferred<String> = coroutineScope {
         // (1)
         async {
-            return@async ("WHAT IS THAT?");
+            return@async ("WHAT IS THAT?")
         }
     }
 
@@ -44,7 +44,7 @@ class StockInteractor : Observable() {
             object : Callback<StockApi> {
 
                 override fun onFailure(call: Call<StockApi>, t: Throwable) {
-                    throw t;
+                    throw t
                 }
 
                 override fun onResponse(call: Call<StockApi>, response: Response<StockApi>) {
