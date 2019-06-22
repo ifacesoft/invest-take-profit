@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.suai.sergey.investmentportfolio.R
 import com.suai.sergey.investmentportfolio.models.Stock
 
 class DataClassAdapter internal constructor(private val dataClassList: ArrayList<Stock>) :
