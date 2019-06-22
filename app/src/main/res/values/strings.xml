@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">Investment portfolio</string>
 
-    <!--BUY FRAGMENT DIALOG-->
-    <string name="amount_textview">Input amount:</string>
-    <string name="price_textview">Input price:</string>
-    <string name="hint_input_amount">Amount</string>
-    <string name="hint_input_price">Price</string>
-    <string name="name">Name:</string>
-    <string name="final_text">NULL HA-HA</string>
-    <string name="btn_buy">buy</string>
-    <string name="btn_sell">sell</string>
+    <!--FRAGMENT DIALOG-->
+    <string name="now_price_static_textview">Текущая цена, руб.</string>
+    <string name="now_price_editable_textview">10000</string>
+    <string name="hint_input_amount">Количество</string>
+    <string name="hint_input_price">Цена</string>
+    <string name="btn_buy">купить</string>
+    <string name="btn_sell">продать</string>
 
 </resources>

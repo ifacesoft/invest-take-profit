@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content">
-    <EditText
-            android:layout_width="0dp"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/colorAccent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number|numberDecimal"
             android:ems="10"
-            android:id="@+id/amount"
-            android:hint="@string/hint_input_amount" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent"/>
-    <EditText
-            android:layout_width="0dp"
+            android:id="@+id/amount" android:hint="@string/hint_input_amount"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/colorAccent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number|numberDecimal"
+            android:inputType="number"
             android:ems="10"
-            android:id="@+id/price"
-            app:layout_constraintTop_toBottomOf="@+id/amount"
-            android:hint="@string/hint_input_price"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"/>
+            android:id="@+id/price" android:hint="@string/hint_input_price"/>
+
     <Button
             android:text="@string/btn_sell"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/price"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/button"/>
+</LinearLayout>
