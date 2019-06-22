@@ -4,7 +4,6 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-
 import android.widget.Toast
 import android.os.Build
 import android.util.Log
@@ -44,8 +43,7 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
             synchronized(this) {
                 try {
                     NotificationManagerCompat.from(this).apply {
-
-                    builder
+                        builder
                             .setContentTitle("Цены на акции")
                             .setContentText("Объявлен год роста акций ЛУКОЙЛа: " + System.currentTimeMillis())
 
@@ -53,7 +51,7 @@ class UpdateCurrentPrices : IntentService(UpdateCurrentPrices::class.simpleName)
                         Log.d(LOG_TAG, "onHandleIntent notify " + System.currentTimeMillis())
                     }
 
-                    Thread.sleep(5000)
+                    Thread.sleep(1000)
                 } catch (e: Exception) {
                 }
             }

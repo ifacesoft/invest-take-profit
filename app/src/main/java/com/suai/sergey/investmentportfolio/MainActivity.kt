@@ -22,14 +22,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var longsName: String
     lateinit var costs: String
 
-
     private var recyclerView: RecyclerView? = null
 
     private val spinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
 
-    private var recyclerViewData: ArrayList<Stock> = dataList()
+    private var recyclerViewData: ArrayList<Stock> = ArrayList()
 
     private val recyclerViewAdapter: DataClassAdapter by lazy {
         DataClassAdapter(recyclerViewData)
@@ -47,11 +46,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         makeSpinner()
 
         startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
-    }
-
-    private fun dataList(): ArrayList<DataClass> {
-        val list = ArrayList<DataClass>()
-        return list
     }
 
     private fun makeRecycleView() {
@@ -90,13 +84,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
     override fun updateStockSpinner(stocks: List<Stock>) {
-
         spinnerData = stocks
 
         spinnerAdapter.clear()
         spinnerAdapter.addAll(stocks.map { it.getStock_name() })
         spinnerAdapter.notifyDataSetChanged()
-
     }
 
     override fun updateRecylerViewItem() {
@@ -107,5 +99,4 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         // TODO("OMFG!!!") //To change body of created functions use File | Settings | File Templates.
     }
-
 }
