@@ -55,7 +55,6 @@ class MainPresenter(
         stockPriceInteractor.loadData(uid)
     }
 
-
     override fun loadStocks() {
         stockInteractor.addObserver(this)
         stockInteractor.loadData()
