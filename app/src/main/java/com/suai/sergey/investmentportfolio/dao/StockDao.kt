@@ -28,7 +28,7 @@ interface StockDao {
     @Update
     fun updateStockPrice(stock: Stock)
 
-    @Query("SELECT * FROM invest_stock WHERE stock_price IS NULL")
+    @Query("SELECT * FROM invest_stock WHERE stock_price <> 0.00")
     fun getFavoriteStocks(): List<Stock>
 
     @Query("SELECT * FROM invest_stock WHERE stock_price <> 0.00")
