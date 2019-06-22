@@ -14,6 +14,7 @@ class MainPresenter(
     private var stockPriceInteractor: StockPriceInteractor
 ) :
     MainContract.Presenter, Observer {
+
     private val TAG = "Invest_MainContract"
 
 
@@ -50,5 +51,9 @@ class MainPresenter(
     override fun loadStocks() {
         stockInteractor.addObserver(this)
         stockInteractor.loadData()
+    }
+
+    override fun refreshRecyclerView() {
+        
     }
 }
