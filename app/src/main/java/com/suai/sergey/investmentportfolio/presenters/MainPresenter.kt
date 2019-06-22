@@ -43,7 +43,7 @@ class MainPresenter(
 
             obeservable is RefreshingInteractor -> {
                 @Suppress("UNCHECKED_CAST")
-                view.updateRecylerViewItem()
+                view.refreshRecycerView((parcel as List<Stock>))
             }
 
 

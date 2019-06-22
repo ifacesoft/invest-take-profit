@@ -16,6 +16,6 @@ interface MainContract {
     interface View {
         fun updateStockSpinner(stocks: List<Stock>)
         fun updateRecylerViewItem()
-        fun refreshRecycerView()
+        fun refreshRecycerView(stocks: List<Stock>)
     }
 }

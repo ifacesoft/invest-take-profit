@@ -23,7 +23,7 @@ class RefreshingInteractor : Observable() {
     fun loadData() = scope.launch {
         // (2)
         try {
-            notifyObservers(refreshFromDb())
+            refreshFromDb()
             this@RefreshingInteractor.getTasks().await()
         } catch (e: Exception) {
             Log.d(TAG, "Exception OMFG!")
@@ -34,7 +34,6 @@ class RefreshingInteractor : Observable() {
     private fun refreshFromDb() {
         // пусть та
         Log.d(TAG, "UpdateObservers")
-        var list: List<Stock> = InvestTakeProfitApplication.roomDb!!.stockDao().getStocksWithPrices()
         setChanged()
         notifyObservers(InvestTakeProfitApplication.roomDb!!.stockDao().getStocksWithPrices())
     }

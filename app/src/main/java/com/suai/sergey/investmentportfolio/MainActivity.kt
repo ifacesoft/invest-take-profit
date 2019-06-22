@@ -14,6 +14,8 @@ import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 
@@ -105,16 +107,23 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun updateRecylerViewItem() {
-        val myList: ArrayList<Stock> = ArrayList<Stock>()
-        myList.add(Stock(0, "ARLS", "ALROSA"))
-        recyclerViewData.addAll(myList)
-        recyclerViewAdapter.notifyDataSetChanged()
+        mainPresenter!!.refreshRecyclerView()
+//        val myList: ArrayList<Stock> = ArrayList<Stock>()
+//        myList.add(Stock(0, "ARLS", "ALROSA"))
+//        recyclerViewData.addAll(myList)
+//        recyclerViewAdapter.notifyDataSetChanged()
 
         // TODO("OMFG!!!") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun refreshRecycerView() {
-        mainPresenter!!.refreshRecyclerView()
+    override fun refreshRecycerView(stocks: List<Stock>) {
+        if (!stocks.isEmpty()) {
+            Handler(Looper.getMainLooper()).post {
+                recyclerViewData.addAll(stocks)
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
+        }
+
     }
 
 }
