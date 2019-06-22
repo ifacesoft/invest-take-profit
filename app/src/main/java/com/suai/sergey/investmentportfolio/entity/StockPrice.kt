@@ -8,11 +8,13 @@ class StockPrice {
     @SerializedName("security")
     @Expose
     var security: String? = null
+
     @SerializedName("datetime")
     @Expose
     var datetime: String? = null
+
     @SerializedName("price")
     @Expose
-    var price: Double? = null
+    var price: String? = null
 
 }

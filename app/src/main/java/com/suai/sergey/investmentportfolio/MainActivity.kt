@@ -14,16 +14,25 @@ import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
 import android.os.Build
+import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     lateinit var shortsName: String
     lateinit var longsName: String
     lateinit var costs: String
+
+
     private var recyclerView: RecyclerView? = null
 
     private val spinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
+    }
+
+    private var recyclerViewData: ArrayList<Stock> = dataList()
+
+    private val recyclerViewAdapter: DataClassAdapter by lazy {
+        DataClassAdapter(recyclerViewData)
     }
 
     private var spinnerData: List<Stock> = emptyList()
@@ -32,7 +41,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainPresenter = MainPresenter(this, StockInteractor())
+        mainPresenter = MainPresenter(this, StockInteractor(), StockPriceInteractor())
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
@@ -48,14 +57,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private fun makeRecycleView() {
         val tvRecyclerView: TextView = findViewById(R.id.tv_recyclerView)
         recyclerView = findViewById(R.id.recycler_view)
-        if (dataList().size > 0) {
-            tvRecyclerView.visibility = View.INVISIBLE
-            recyclerView!!.layoutManager = LinearLayoutManager(this)
-            val adapter = DataClassAdapter(dataList())
-            recyclerView!!.adapter = adapter
-        } else {
-            tvRecyclerView.visibility = View.VISIBLE
-        }
+//        if (dataList().size > 0) {
+        tvRecyclerView.visibility = View.INVISIBLE
+        recyclerView!!.layoutManager = LinearLayoutManager(this)
+        recyclerView!!.adapter = recyclerViewAdapter
+//        } else {
+////            tvRecyclerView.visibility = View.VISIBLE
+//        }
     }
 
     private fun makeSpinner() {
@@ -67,10 +75,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                if (position != 0) {
-                    val item = spinnerData[position]
-                    toast(item.getStock_uid())
-                }
+                val item = spinnerData.get(position)
+                mainPresenter?.loadStockPrice(item.getStock_uid())
+                toast(item.getStock_uid())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -82,14 +89,23 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     fun Context.toast(message: CharSequence) =
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-    override fun updateStockSpinner(spinner: List<Stock>) {
+    override fun updateStockSpinner(stocks: List<Stock>) {
 
-        spinnerData = spinner
+        spinnerData = stocks
 
         spinnerAdapter.clear()
-        spinnerAdapter.addAll(spinner.map { it.getStock_name() })
+        spinnerAdapter.addAll(stocks.map { it.getStock_name() })
         spinnerAdapter.notifyDataSetChanged()
 
+    }
+
+    override fun updateRecylerViewItem() {
+        val myList: ArrayList<Stock> = ArrayList<Stock>()
+        myList.add(Stock(0, "ARLS", "ALROSA"))
+        recyclerViewData.addAll(myList)
+        recyclerViewAdapter.notifyDataSetChanged()
+
+        // TODO("OMFG!!!") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

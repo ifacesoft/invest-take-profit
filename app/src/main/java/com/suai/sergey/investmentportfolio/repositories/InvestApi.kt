@@ -12,7 +12,7 @@ interface InvestApi {
     fun getStocks(@Query("base") resourceName: String): Call<StockApi>
 
 
-    @GET("/current_price//{id}")
-    fun getStockPrice(@Path("id") id: Int): Call<StockPriceApi>
+    @GET("/current_price/{id}")
+    fun getStockPrice(@Path("id") id: String): Call<StockPriceApi>
 //    {"title":"Текущая цена акции","type":"object","status":"200","error":"","limit":0,"offset":0,"count":1,"data":{"security":"ALRS","datetime":"2019-01-31 12:19:00","price":98.04}}
 }
