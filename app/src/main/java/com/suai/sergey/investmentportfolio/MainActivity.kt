@@ -32,37 +32,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainPresenter = MainPresenter(this, StockInteractor());
+        mainPresenter = MainPresenter(this, StockInteractor())
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
 
-        val intent = Intent(this, UpdateCurrentPrices::class.java)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
+        startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
     }
 
     private fun dataList(): ArrayList<DataClass> {
         val list = ArrayList<DataClass>()
         return list
     }
-
-    private fun spinnerList(): ArrayList<String> {
-        val arrayList = ArrayList<String>()
-        arrayList.add(" ")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        return arrayList
-    }
-
 
     private fun makeRecycleView() {
         val tvRecyclerView: TextView = findViewById(R.id.tv_recyclerView)
@@ -87,7 +68,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (position != 0) {
-                    val item = spinnerData.get(position)
+                    val item = spinnerData[position]
                     toast(item.getStock_uid())
                 }
             }
