@@ -44,4 +44,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 }
