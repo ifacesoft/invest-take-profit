@@ -7,13 +7,13 @@ import android.view.View
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.suai.sergey.investmentportfolio.contract.MainContract
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
-import android.R.attr.keySet
-
+import android.content.Intent
+import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
+import android.os.Build
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -36,6 +36,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
+
+        val intent = Intent(this, UpdateCurrentPrices::class.java)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
     private fun dataList(): ArrayList<DataClass> {
@@ -54,6 +62,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         arrayList.add("ГАхзпромсясцо")
         return arrayList
     }
+
 
     private fun makeRecycleView() {
         val tvRecyclerView: TextView = findViewById(R.id.tv_recyclerView)
@@ -87,7 +96,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
             }
         }
-
     }
 
     fun Context.toast(message: CharSequence) =
@@ -104,5 +112,3 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 }
-
-
