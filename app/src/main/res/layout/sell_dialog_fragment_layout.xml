@@ -55,12 +55,11 @@
             android:layout_marginBottom="4dp"
             android:textAllCaps="true"
             android:textStyle="bold"
-    fancy:fb_borderColor="@color/colorWhite"
-    fancy:fb_borderWidth="1dp"
-    fancy:fb_defaultColor="@color/colorAccent"
-    fancy:fb_focusColor="#FAFAFA"
-    fancy:fb_radius="30dp"
-    fancy:fb_text="@string/btn_sell"
-    fancy:fb_textColor="#FFFFFF"/>
+            fancy:fb_borderColor="@color/colorWhite"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_focusColor="#FAFAFA"
+            fancy:fb_radius="30dp"
+            fancy:fb_text="@string/btn_sell"
+            fancy:fb_textColor="#FFFFFF" app:fb_defaultColor="@color/colorPrimary"/>
 
 </LinearLayout>

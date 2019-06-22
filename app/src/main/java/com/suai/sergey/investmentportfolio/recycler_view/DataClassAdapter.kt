@@ -1,7 +1,5 @@
 package com.suai.sergey.investmentportfolio.recycler_view
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +26,8 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         val dataClass: Stock = this.dataClassList[position]
         holder.shortName.text = dataClass.getStock_uid()
         holder.longName.text = dataClass.getStock_name()
-        holder.cost.text = dataClass.getStock_price().toString()
+        val rubles = dataClass.getStock_price().toString()
+        holder.cost.text = "$rubles руб."
     }
 
     fun removeItem(viewHolder: RecyclerView.ViewHolder) {

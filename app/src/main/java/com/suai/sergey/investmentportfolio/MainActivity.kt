@@ -114,17 +114,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                         recyclerViewAdapter.removeItem(viewHolder)
                     }
                 } else if (direction == ItemTouchHelper.RIGHT) {
-                    if (bought == 1) {
-                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                    } else {
-                        BuyDialogFragment().show(supportFragmentManager, "buy")
-                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                    }
+                    BuyDialogFragment().show(supportFragmentManager, "buy")
+                    recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                 }
 
             }
-
-
 
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
