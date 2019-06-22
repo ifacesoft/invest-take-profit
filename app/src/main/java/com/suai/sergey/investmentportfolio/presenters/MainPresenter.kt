@@ -29,7 +29,7 @@ class MainPresenter(private var view: MainContract.View, private var stockIntera
             }
 
         }
-    }
+    } 
 
     override fun loadStockPrice() {
     }
