@@ -1,10 +1,11 @@
-package com.suai.sergey.investmentportfolio
+package com.suai.sergey.investmentportfolio.recycler_view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.suai.sergey.investmentportfolio.R
 import com.suai.sergey.investmentportfolio.models.Stock
 
 class DataClassAdapter internal constructor(private val dataClassList: ArrayList<Stock>) :
@@ -25,6 +26,15 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
         holder.shortName.text = dataClass.getStock_uid()
         holder.longName.text = dataClass.getStock_name()
         holder.cost.text = dataClass.getStock_price().toString()
+    }
+
+    fun refreshItem() {
+
+    }
+
+    fun removeItem(viewHolder: RecyclerView.ViewHolder) {
+        dataClassList.removeAt(viewHolder.adapterPosition)
+        notifyItemRemoved(viewHolder.adapterPosition)
     }
 
     class DataClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
