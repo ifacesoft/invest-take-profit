@@ -3,8 +3,10 @@ package com.suai.sergey.investmentportfolio.recycler_view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.suai.sergey.investmentportfolio.R
 import com.suai.sergey.investmentportfolio.models.Stock
 
@@ -23,6 +25,8 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
 
     override fun onBindViewHolder(holder: DataClassViewHolder, position: Int) {
         val dataClass: Stock = this.dataClassList[position]
+
+//        Picasso.get().load().into(holder.image)
         holder.shortName.text = dataClass.getStock_uid()
         holder.longName.text = dataClass.getStock_name()
         holder.cost.text = dataClass.getStock_price().toString()
@@ -38,6 +42,7 @@ class DataClassAdapter internal constructor(private val dataClassList: ArrayList
     }
 
     class DataClassViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val image: ImageView = itemView.findViewById(R.id.imageView2)
         val shortName: TextView = itemView.findViewById(R.id.item_tv_short_name)
         val longName: TextView = itemView.findViewById(R.id.item_tv_long_name)
         val cost: TextView = itemView.findViewById(R.id.item_tv_cost)
