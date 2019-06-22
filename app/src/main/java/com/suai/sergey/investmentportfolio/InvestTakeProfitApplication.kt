@@ -10,6 +10,7 @@ import com.facebook.stetho.Stetho
 import com.suai.sergey.investmentportfolio.converters.Converter
 import com.suai.sergey.investmentportfolio.dao.StockDao
 import com.suai.sergey.investmentportfolio.entity.StockPrice
+import com.suai.sergey.investmentportfolio.models.Deal
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.repositories.InvestApi
 import retrofit2.Retrofit
@@ -47,7 +48,7 @@ class InvestTakeProfitApplication : Application() {
 
 //@TypeConverters(Converters::class)
 @Database(
-    entities = [Stock::class],
+    entities = [Stock::class, Deal::class],
     version = 1
 )
 
