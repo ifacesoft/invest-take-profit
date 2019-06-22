@@ -3,6 +3,7 @@ package com.suai.sergey.investmentportfolio.presenters
 import android.os.Looper
 import android.util.Log
 import com.suai.sergey.investmentportfolio.contract.MainContract
+import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
@@ -11,7 +12,8 @@ import java.util.*
 class MainPresenter(
     private var view: MainContract.View,
     private var stockInteractor: StockInteractor,
-    private var stockPriceInteractor: StockPriceInteractor
+    private var stockPriceInteractor: StockPriceInteractor,
+    private var refreshingInteractor: RefreshingInteractor
 ) :
     MainContract.Presenter, Observer {
 
@@ -39,6 +41,12 @@ class MainPresenter(
                 view.updateRecylerViewItem()
             }
 
+            obeservable is RefreshingInteractor -> {
+                @Suppress("UNCHECKED_CAST")
+                view.updateRecylerViewItem()
+            }
+
+
         }
     }
 
@@ -54,6 +62,8 @@ class MainPresenter(
     }
 
     override fun refreshRecyclerView() {
-        
+        refreshingInteractor.addObserver(this)
+        refreshingInteractor.loadData()
+
     }
 }

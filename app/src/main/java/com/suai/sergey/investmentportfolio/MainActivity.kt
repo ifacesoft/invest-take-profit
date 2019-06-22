@@ -14,6 +14,7 @@ import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
 import android.os.Build
+import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
 
-    private var recyclerViewData: ArrayList<Stock> = dataList()
+    private var recyclerViewData: ArrayList<Stock> = ArrayList<Stock>()
 
     private val recyclerViewAdapter: DataClassAdapter by lazy {
         DataClassAdapter(recyclerViewData)
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainPresenter = MainPresenter(this, StockInteractor(), StockPriceInteractor())
+        mainPresenter = MainPresenter(this, StockInteractor(), StockPriceInteractor(), RefreshingInteractor())
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
@@ -57,24 +58,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
 
     }
-
-    private fun dataList(): ArrayList<Stock> {
-        return ArrayList<Stock>()
-
-    }
-
-    private fun spinnerList(): ArrayList<String> {
-        val arrayList = ArrayList<String>()
-        arrayList.add(" ")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        arrayList.add("ГАхзпромсясцо")
-        return arrayList
-    }
-
 
     private fun makeRecycleView() {
         val tvRecyclerView: TextView = findViewById(R.id.tv_recyclerView)
@@ -128,6 +111,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         recyclerViewAdapter.notifyDataSetChanged()
 
         // TODO("OMFG!!!") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun refreshRecycerView() {
+        mainPresenter!!.refreshRecyclerView()
     }
 
 }
