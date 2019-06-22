@@ -3,12 +3,20 @@ package com.suai.sergey.investmentportfolio.presenters
 import android.os.Looper
 import android.util.Log
 import com.suai.sergey.investmentportfolio.contract.MainContract
+import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
+import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import java.util.*
 
-class MainPresenter(private var view: MainContract.View, private var stockInteractor: StockInteractor) :
+class MainPresenter(
+    private var view: MainContract.View,
+    private var stockInteractor: StockInteractor,
+    private var stockPriceInteractor: StockPriceInteractor,
+    private var refreshingInteractor: RefreshingInteractor
+) :
     MainContract.Presenter, Observer {
+
     private val TAG = "Invest_MainContract"
 
 
@@ -28,14 +36,34 @@ class MainPresenter(private var view: MainContract.View, private var stockIntera
                 view.updateStockSpinner((parcel as List<Stock>))
             }
 
+            obeservable is StockPriceInteractor -> {
+                @Suppress("UNCHECKED_CAST")
+                view.updateRecylerViewItem()
+            }
+
+            obeservable is RefreshingInteractor -> {
+                @Suppress("UNCHECKED_CAST")
+                view.refreshRecycerView((parcel as List<Stock>))
+            }
+
+
         }
     }
 
-    override fun loadStockPrice() {
+    override fun loadStockPrice(uid: String) {
+        stockPriceInteractor.addObserver(this)
+        stockPriceInteractor.loadData(uid)
     }
+
 
     override fun loadStocks() {
         stockInteractor.addObserver(this)
         stockInteractor.loadData()
+    }
+
+    override fun refreshRecyclerView() {
+        refreshingInteractor.addObserver(this)
+        refreshingInteractor.loadData()
+
     }
 }

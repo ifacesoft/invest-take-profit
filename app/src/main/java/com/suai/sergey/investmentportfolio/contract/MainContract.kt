@@ -8,11 +8,14 @@ interface MainContract {
     interface Presenter {
 
         fun loadStocks()
-        fun loadStockPrice()
+        fun loadStockPrice(uid: String)
+        fun refreshRecyclerView()
 
     }
 
     interface View {
-        fun updateStockSpinner(spinner: List<Stock>)
+        fun updateStockSpinner(stocks: List<Stock>)
+        fun updateRecylerViewItem()
+        fun refreshRecycerView(stocks: List<Stock>)
     }
 }
