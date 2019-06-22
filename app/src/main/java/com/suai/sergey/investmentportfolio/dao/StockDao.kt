@@ -15,11 +15,9 @@ interface StockDao {
     @JvmSuppressWildcards
     fun insertAllStocks(objects: List<Stock>)
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
     fun insertAllStocks(objects: Stock)
-
 
     @Query("UPDATE invest_stock SET stock_price = :price, stock_price_date = :datetime WHERE stock_uid = :uid")
     fun updatePrice(uid: String, price: Double, datetime: String)
@@ -30,4 +28,6 @@ interface StockDao {
     @Update
     fun updateStockPrice(stock: Stock)
 
+    @Query("SELECT * FROM invest_stock WHERE stock_price IS NULL")
+    fun getFavoriteStocks(): List<Stock>
 }

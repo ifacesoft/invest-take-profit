@@ -2,8 +2,6 @@ package com.suai.sergey.investmentportfolio.interactors
 
 import android.util.Log
 import com.suai.sergey.investmentportfolio.InvestTakeProfitApplication
-import com.suai.sergey.investmentportfolio.entity.Stock
-import com.suai.sergey.investmentportfolio.entity.StockApi
 import com.suai.sergey.investmentportfolio.entity.StockPrice
 import com.suai.sergey.investmentportfolio.entity.StockPriceApi
 import com.suai.sergey.investmentportfolio.exceptions.StocksLoadApiFailException
@@ -16,7 +14,6 @@ import java.util.*
 class StockPriceInteractor : Observable() {
     private val TAG = "Invest_StkPriceIntr"
 
-
     val job = SupervisorJob()
     val scope = CoroutineScope(Dispatchers.Default + job)
 
@@ -24,7 +21,7 @@ class StockPriceInteractor : Observable() {
     suspend fun getTasks(): Deferred<String> = coroutineScope {
         // (1)
         async {
-            return@async ("WHAT IS THAT?");
+            return@async ("WHAT IS THAT?")
         }
     }
 
@@ -69,16 +66,16 @@ class StockPriceInteractor : Observable() {
         )
     }
 
-    private fun saveTasks(stockResponse: StockPrice) {
+    private fun saveTasks(stockPrice: StockPrice) {
         // пусть так
         val stockEntities: ArrayList<com.suai.sergey.investmentportfolio.models.Stock> = ArrayList()
 
         InvestTakeProfitApplication.roomDb!!.stockDao().getAllStocks()
 
         InvestTakeProfitApplication.roomDb!!.stockDao().updatePrice(
-            stockResponse.security!!,
-            stockResponse.price!!.toDouble(),
-            stockResponse.datetime.toString()
+            stockPrice.security!!,
+            stockPrice.price!!.toDouble(),
+            stockPrice.datetime.toString()
         )
         Log.d(TAG, "UpdateObservers")
         setChanged()

@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var longsName: String
     lateinit var costs: String
 
-
     private var recyclerView: RecyclerView? = null
 
     private val spinnerAdapter: ArrayAdapter<String> by lazy {
@@ -49,16 +48,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         makeRecycleView()
         makeSpinner()
 
-
-        val intent = Intent(this, UpdateCurrentPrices::class.java)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
-
-
+        startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
     }
 
     private fun makeRecycleView() {
@@ -97,13 +87,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
     override fun updateStockSpinner(stocks: List<Stock>) {
-
         spinnerData = stocks
 
         spinnerAdapter.clear()
         spinnerAdapter.addAll(stocks.map { it.getStock_name() })
         spinnerAdapter.notifyDataSetChanged()
-
     }
 
     override fun updateRecylerViewItem() {

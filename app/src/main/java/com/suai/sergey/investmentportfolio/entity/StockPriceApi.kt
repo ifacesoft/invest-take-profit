@@ -29,6 +29,4 @@ class StockPriceApi {
     @SerializedName("data")
     @Expose
     var data: StockPrice? = null
-
-
 }

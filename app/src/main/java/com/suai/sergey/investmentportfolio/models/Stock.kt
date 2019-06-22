@@ -1,7 +1,5 @@
 package com.suai.sergey.investmentportfolio.models
 
-
-import androidx.annotation.NonNull
 import androidx.room.*
 import com.suai.sergey.investmentportfolio.converters.Converter
 import java.util.*
