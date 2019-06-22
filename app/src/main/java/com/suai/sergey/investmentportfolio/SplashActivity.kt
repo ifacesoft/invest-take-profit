@@ -1,6 +1,8 @@
 package com.suai.sergey.investmentportfolio
 
+import android.app.admin.FreezePeriod
 import android.content.Intent
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.suai.sergey.investmentportfolio.fragments.SellDialogFragment
@@ -12,12 +14,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        imageView.setOnClickListener {
-            SellDialogFragment().show(supportFragmentManager, "a")
-        }
-
-/*        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout)*/
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout)
     }
 }
