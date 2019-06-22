@@ -28,7 +28,7 @@ class SellDialogFragment : DialogFragment() {
             if (!view.amount.text?.isBlank()!! && !view.price.text?.isBlank()!!) {
                 // ЗАПИСЫВАЕМ ПОКУПКУ В БАЗУ
                 val amount: Int = view.amount.text.toString().toInt()
-                val price: Int = view.price.text.toString().toInt()
+                val price: Float = view.price.text.toString().toFloat()
                 onDestroyView()
             } else {
                 // ВЫВЕСТИ ОШИБКУ
