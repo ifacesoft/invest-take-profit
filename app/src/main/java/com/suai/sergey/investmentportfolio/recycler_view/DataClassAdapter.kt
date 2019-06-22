@@ -1,4 +1,4 @@
-package com.suai.sergey.investmentportfolio
+package com.suai.sergey.investmentportfolio.recycler_view
 
 import android.view.LayoutInflater
 import android.view.View

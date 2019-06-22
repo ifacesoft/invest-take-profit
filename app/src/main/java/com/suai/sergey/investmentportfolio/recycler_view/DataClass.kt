@@ -1,4 +1,4 @@
-package com.suai.sergey.investmentportfolio
+package com.suai.sergey.investmentportfolio.recycler_view
 
 data class DataClass constructor(
     private var shortName: String,
