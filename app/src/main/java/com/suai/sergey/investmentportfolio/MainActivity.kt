@@ -132,19 +132,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                             recyclerViewAdapter.removeItem(viewHolder)
                         }
                     } else if (direction == ItemTouchHelper.RIGHT) {
-                        if (bought == 1) {
-                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                        } else {
-                            BuyDialogFragment().apply {
-                                arguments = Bundle().apply {
-                                    putString(
-                                        "key",
-                                        spinnerData.get(viewHolder.adapterPosition).getStock_uid()
-                                    )
-                                }
-                            }.show(supportFragmentManager, "buy")
-                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                        }
+
+                        BuyDialogFragment().apply {
+                            arguments = Bundle().apply {
+                                putString(
+                                    "key",
+                                    spinnerData.get(viewHolder.adapterPosition).getStock_uid()
+                                )
+                            }
+                        }.show(supportFragmentManager, "buy")
+                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+
                     }
                 }
 
