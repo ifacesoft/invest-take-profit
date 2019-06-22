@@ -12,14 +12,10 @@ import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
-import android.graphics.Canvas
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.view.MotionEvent
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import com.suai.sergey.investmentportfolio.fragments.BuyDialogFragment
 import com.suai.sergey.investmentportfolio.fragments.SellDialogFragment
 import com.suai.sergey.investmentportfolio.interactors.BuyInteractor
@@ -150,11 +146,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                             recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                         }
                     }
-
+                } else if (direction == ItemTouchHelper.RIGHT) {
+                    BuyDialogFragment().show(supportFragmentManager, "buy")
+                    recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                 }
 
 
             }
+
+        }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
