@@ -3,6 +3,7 @@ package com.suai.sergey.investmentportfolio.presenters
 import android.os.Looper
 import android.util.Log
 import com.suai.sergey.investmentportfolio.contract.MainContract
+import com.suai.sergey.investmentportfolio.interactors.BuyInteractor
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
@@ -13,9 +14,19 @@ class MainPresenter(
     private var view: MainContract.View,
     private var stockInteractor: StockInteractor,
     private var stockPriceInteractor: StockPriceInteractor,
-    private var refreshingInteractor: RefreshingInteractor
+    private var refreshingInteractor: RefreshingInteractor,
+    private var buyInteractor: BuyInteractor
 ) :
     MainContract.Presenter, Observer {
+    override fun sellDeal(uid: String) {
+        buyInteractor.addObserver(this)
+        buyInteractor.buyDeal()
+    }
+
+    override fun buyDeal(uid: String) {
+        buyInteractor.addObserver(this)
+        buyInteractor.sellDeal()
+    }
 
     private val TAG = "Invest_MainContract"
 

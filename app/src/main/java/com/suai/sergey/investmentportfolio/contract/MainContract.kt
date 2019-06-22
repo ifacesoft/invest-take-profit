@@ -10,6 +10,8 @@ interface MainContract {
         fun loadStocks()
         fun loadStockPrice(uid: String)
         fun refreshRecyclerView()
+        fun buyDeal(uid: String)
+        fun sellDeal(uid: String)
 
     }
 

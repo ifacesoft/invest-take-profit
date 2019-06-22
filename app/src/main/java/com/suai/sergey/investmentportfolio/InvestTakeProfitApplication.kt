@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.facebook.stetho.Stetho
 import com.suai.sergey.investmentportfolio.converters.Converter
+import com.suai.sergey.investmentportfolio.dao.DealDao
 import com.suai.sergey.investmentportfolio.dao.StockDao
 import com.suai.sergey.investmentportfolio.models.Deal
 import com.suai.sergey.investmentportfolio.entity.StockPrice
@@ -55,6 +56,7 @@ class InvestTakeProfitApplication : Application() {
 @TypeConverters(Converter::class)
 abstract class InvestDataBase : RoomDatabase() {
     abstract fun stockDao(): StockDao
+    abstract fun dealDao(): DealDao
 
     companion object {
         private var INSTANCE: InvestDataBase? = null
@@ -70,15 +72,15 @@ abstract class InvestDataBase : RoomDatabase() {
             return INSTANCE
         }
     }
-    }
+}
 
 class ObservableStocks {
 
-    var update : Boolean= false
-    set(value) {
-                    field = value
+    var update: Boolean = false
+        set(value) {
+            field = value
             listener(value)
-    }
+        }
 
-    var listener : (Boolean) -> Unit = {}
+    var listener: (Boolean) -> Unit = {}
 }

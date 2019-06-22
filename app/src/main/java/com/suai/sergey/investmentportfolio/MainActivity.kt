@@ -1,6 +1,5 @@
 package com.suai.sergey.investmentportfolio
 
-import android.content.ComponentName
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,11 +12,10 @@ import com.suai.sergey.investmentportfolio.interactors.StockInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
-import android.content.ServiceConnection
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
+import com.suai.sergey.investmentportfolio.interactors.BuyInteractor
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 
@@ -45,7 +43,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainPresenter = MainPresenter(this, StockInteractor(), StockPriceInteractor(), RefreshingInteractor())
+        mainPresenter = MainPresenter(
+            this,
+            StockInteractor(),
+            StockPriceInteractor(),
+            RefreshingInteractor(),
+            BuyInteractor()
+        )
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
@@ -55,6 +59,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
 
         startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
+
+        (mainPresenter as MainPresenter).buyDeal("SBER")
+        (mainPresenter as MainPresenter).sellDeal("SBER")
     }
 
     private fun makeRecycleView() {
