@@ -1,19 +1,16 @@
 package com.suai.sergey.investmentportfolio.dao
 
 import androidx.room.*
+import com.suai.sergey.investmentportfolio.models.Deal
 import com.suai.sergey.investmentportfolio.models.Stock
 
 @Dao
-interface StockDao {
-    @Query("SELECT * FROM invest_stock")
-    fun getAllStocks(): List<Stock>
+interface DealDao {
+    @Query("SELECT * FROM invest_deal")
+    fun getAllStocks(): List<Deal>
 
     @Query("SELECT * FROM invest_stock")
     fun getStock(): Stock
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    @JvmSuppressWildcards
-    fun insertAllStocks(objects: List<Stock>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
@@ -28,9 +25,8 @@ interface StockDao {
     @Update
     fun updateStockPrice(stock: Stock)
 
-    @Query("SELECT * FROM invest_stock WHERE stock_price <> 0.00")
+    @Query("SELECT * FROM invest_stock WHERE stock_price IS NULL")
     fun getFavoriteStocks(): List<Stock>
 
-    @Query("SELECT * FROM invest_stock WHERE stock_price <> 0.00")
-    fun observeStocksWithPrices(): List<Stock>
+    //delete добавить
 }

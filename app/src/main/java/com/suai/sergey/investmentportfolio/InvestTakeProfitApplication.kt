@@ -9,6 +9,8 @@ import androidx.room.TypeConverters
 import com.facebook.stetho.Stetho
 import com.suai.sergey.investmentportfolio.converters.Converter
 import com.suai.sergey.investmentportfolio.dao.StockDao
+import com.suai.sergey.investmentportfolio.models.Deal
+import com.suai.sergey.investmentportfolio.entity.StockPrice
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.repositories.InvestApi
 import retrofit2.Retrofit
@@ -18,7 +20,8 @@ class InvestTakeProfitApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         //инциализурру
-        Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this)
+
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://moex.ifacesoft.ru") //Базовая часть адреса
@@ -38,12 +41,14 @@ class InvestTakeProfitApplication : Application() {
             private set
         var roomDb: InvestDataBase? = null
             private set
+
+        val observableStocks = ObservableStocks()
     }
 }
 
 //@TypeConverters(Converters::class)
 @Database(
-    entities = [Stock::class],
+    entities = [Stock::class, Deal::class],
     version = 1
 )
 
@@ -65,4 +70,15 @@ abstract class InvestDataBase : RoomDatabase() {
             return INSTANCE
         }
     }
+    }
+
+class ObservableStocks {
+
+    var update : Boolean= false
+    set(value) {
+                    field = value
+            listener(value)
+    }
+
+    var listener : (Boolean) -> Unit = {}
 }

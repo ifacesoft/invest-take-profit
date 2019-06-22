@@ -1,4 +1,4 @@
-package com.suai.sergey.investmentportfolio
+package com.suai.sergey.investmentportfolio.recycler_view
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.suai.sergey.investmentportfolio.R
 import com.suai.sergey.investmentportfolio.models.Stock
 
 class DataClassAdapter internal constructor(private val dataClassList: ArrayList<Stock>) :

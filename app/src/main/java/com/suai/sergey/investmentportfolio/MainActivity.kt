@@ -20,6 +20,7 @@ import com.suai.sergey.investmentportfolio.fragments.BuyDialogFragment
 import com.suai.sergey.investmentportfolio.fragments.SellDialogFragment
 import com.suai.sergey.investmentportfolio.interactors.RefreshingInteractor
 import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
+import com.suai.sergey.investmentportfolio.recycler_view.DataClassAdapter
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         makeRecycleView()
         makeSpinner()
         swipeListener()
+
+        InvestTakeProfitApplication.observableStocks.listener = {
+            updateRecylerViewItem()
+        }
 
         startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
     }
@@ -155,6 +160,5 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }
-
     }
 }
