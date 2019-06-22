@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var longsName: String
     lateinit var costs: String
 
-    private var recyclerView: RecyclerView? = null
+    var recyclerView: RecyclerView? = null
 
-    private val spinnerAdapter: ArrayAdapter<String> by lazy {
+    val spinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(this, android.R.layout.simple_spinner_item, ArrayList<String>())
     }
 
@@ -142,19 +142,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                                         spinnerData.get(viewHolder.adapterPosition).getStock_uid()
                                     )
                                 }
-                            }.show(supportFragmentManager, "sell")
+                            }.show(supportFragmentManager, "buy")
                             recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                         }
                     }
-                } else if (direction == ItemTouchHelper.RIGHT) {
-                    BuyDialogFragment().show(supportFragmentManager, "buy")
-                    recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
                 }
 
-
             }
-
-        }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
