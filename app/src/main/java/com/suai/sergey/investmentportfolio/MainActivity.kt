@@ -64,9 +64,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
 
         startForegroundService(Intent(this, UpdateCurrentPrices::class.java))
-
-        (mainPresenter as MainPresenter).buyDeal("SBER")
-        (mainPresenter as MainPresenter).sellDeal("SBER")
     }
 
     private fun makeRecycleView() {
