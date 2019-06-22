@@ -4,10 +4,15 @@ import android.os.Looper
 import android.util.Log
 import com.suai.sergey.investmentportfolio.contract.MainContract
 import com.suai.sergey.investmentportfolio.interactors.StockInteractor
+import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 import com.suai.sergey.investmentportfolio.models.Stock
 import java.util.*
 
-class MainPresenter(private var view: MainContract.View, private var stockInteractor: StockInteractor) :
+class MainPresenter(
+    private var view: MainContract.View,
+    private var stockInteractor: StockInteractor,
+    private var stockPriceInteractor: StockPriceInteractor
+) :
     MainContract.Presenter, Observer {
     private val TAG = "Invest_MainContract"
 
@@ -28,11 +33,19 @@ class MainPresenter(private var view: MainContract.View, private var stockIntera
                 view.updateStockSpinner((parcel as List<Stock>))
             }
 
+            obeservable is StockPriceInteractor -> {
+                @Suppress("UNCHECKED_CAST")
+                view.updateRecylerViewItem()
+            }
+
         }
     }
 
-    override fun loadStockPrice() {
+    override fun loadStockPrice(uid: String) {
+        stockPriceInteractor.addObserver(this)
+        stockPriceInteractor.loadData(uid)
     }
+
 
     override fun loadStocks() {
         stockInteractor.addObserver(this)

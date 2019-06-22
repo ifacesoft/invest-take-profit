@@ -5,7 +5,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.facebook.stetho.Stetho
+import com.suai.sergey.investmentportfolio.converters.Converter
 import com.suai.sergey.investmentportfolio.dao.StockDao
 import com.suai.sergey.investmentportfolio.models.Stock
 import com.suai.sergey.investmentportfolio.repositories.InvestApi
@@ -44,6 +46,8 @@ class InvestTakeProfitApplication : Application() {
     entities = [Stock::class],
     version = 1
 )
+
+@TypeConverters(Converter::class)
 abstract class InvestDataBase : RoomDatabase() {
     abstract fun stockDao(): StockDao
 

@@ -14,6 +14,7 @@ import com.suai.sergey.investmentportfolio.presenters.MainPresenter
 import android.content.Intent
 import com.suai.sergey.investmentportfolio.services.UpdateCurrentPrices
 import android.os.Build
+import com.suai.sergey.investmentportfolio.interactors.StockPriceInteractor
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -32,10 +33,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainPresenter = MainPresenter(this, StockInteractor());
+        mainPresenter = MainPresenter(this, StockInteractor(), StockPriceInteractor())
         (mainPresenter as MainPresenter).loadStocks()
         makeRecycleView()
         makeSpinner()
+
 
         val intent = Intent(this, UpdateCurrentPrices::class.java)
 
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         } else {
             startService(intent)
         }
+
+
     }
 
     private fun dataList(): ArrayList<DataClass> {
@@ -86,10 +90,11 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                if (position != 0) {
-                    val item = spinnerData.get(position)
-                    toast(item.getStock_uid())
-                }
+                //if (position != 0) {
+                val item = spinnerData.get(position)
+                mainPresenter?.loadStockPrice(item.getStock_uid())
+                toast(item.getStock_uid())
+                // }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -101,14 +106,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     fun Context.toast(message: CharSequence) =
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-    override fun updateStockSpinner(spinner: List<Stock>) {
+    override fun updateStockSpinner(stocks: List<Stock>) {
 
-        spinnerData = spinner
+        spinnerData = stocks
 
         spinnerAdapter.clear()
-        spinnerAdapter.addAll(spinner.map { it.getStock_name() })
+        spinnerAdapter.addAll(stocks.map { it.getStock_name() })
         spinnerAdapter.notifyDataSetChanged()
 
+    }
+
+    override fun updateRecylerViewItem() {
+        // TODO("OMFG!!!") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

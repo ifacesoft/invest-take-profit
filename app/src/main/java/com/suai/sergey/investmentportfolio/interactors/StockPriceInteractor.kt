@@ -4,6 +4,8 @@ import android.util.Log
 import com.suai.sergey.investmentportfolio.InvestTakeProfitApplication
 import com.suai.sergey.investmentportfolio.entity.Stock
 import com.suai.sergey.investmentportfolio.entity.StockApi
+import com.suai.sergey.investmentportfolio.entity.StockPrice
+import com.suai.sergey.investmentportfolio.entity.StockPriceApi
 import com.suai.sergey.investmentportfolio.exceptions.StocksLoadApiFailException
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -11,8 +13,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class StockInteractor : Observable() {
-    private val TAG = "Invest_TaskInteractor"
+class StockPriceInteractor : Observable() {
+    private val TAG = "Invest_StkPriceIntr"
 
 
     val job = SupervisorJob()
@@ -26,37 +28,37 @@ class StockInteractor : Observable() {
         }
     }
 
-    fun loadData() = scope.launch {
+    fun loadData(uid: String) = scope.launch {
         // (2)
         try {
 
-            notifyObservers(loadFromApi())
-            this@StockInteractor.getTasks().await()
+            notifyObservers(loadFromApi(uid))
+            this@StockPriceInteractor.getTasks().await()
         } catch (e: Exception) {
             Log.d(TAG, "Exception OMFG!")
             throw e
         }
     }
 
-    private fun loadFromApi() {
-        val stockInteractor: StockInteractor = this;
-        InvestTakeProfitApplication.api!!.getStocks("TASK").enqueue(
-            object : Callback<StockApi> {
+    private fun loadFromApi(uid: String) {
+        val stockPriceInteractor: StockPriceInteractor = this;
+        InvestTakeProfitApplication.api!!.getStockPrice(uid).enqueue(
+            object : Callback<StockPriceApi> {
 
-                override fun onFailure(call: Call<StockApi>, t: Throwable) {
+                override fun onFailure(call: Call<StockPriceApi>, t: Throwable) {
                     throw t;
                 }
 
-                override fun onResponse(call: Call<StockApi>, response: Response<StockApi>) {
+                override fun onResponse(call: Call<StockPriceApi>, response: Response<StockPriceApi>) {
                     if (response.code() == 200) {
-                        val stockResponse: StockApi = response.body()
+                        val stockResponse: StockPriceApi = response.body()
                             ?: throw StocksLoadApiFailException("Ошибка получения Taks из api, пустой список")
-                        if (stockResponse.data.isEmpty()) {
-                            throw StocksLoadApiFailException("Пустой список data")
+                        if (stockResponse.data == null) {
+                            throw StocksLoadApiFailException("пустой")
                         }
 
                         //положили в базу и обсервер уведомили, отправили ему массив тасков
-                        stockInteractor.updateObservers(stockInteractor.saveTasks(stockResponse.data))
+                        stockPriceInteractor.saveTasks(stockResponse.data!!)
                     }
 
                     if (response.code() == 404) {
@@ -67,27 +69,20 @@ class StockInteractor : Observable() {
         )
     }
 
-    private fun saveTasks(stockResponse: List<Stock>): List<com.suai.sergey.investmentportfolio.models.Stock> {
+    private fun saveTasks(stockResponse: StockPrice) {
         // пусть так
         val stockEntities: ArrayList<com.suai.sergey.investmentportfolio.models.Stock> = ArrayList()
 
-        //TODO Вопрос с getId
-        for (stock in stockResponse) {
-            stockEntities.add(com.suai.sergey.investmentportfolio.models.Stock(null, stock.secid.toString(), stock.name.toString()))
-        }
+        InvestTakeProfitApplication.roomDb!!.stockDao().getAllStocks()
 
-        InvestTakeProfitApplication.roomDb!!.stockDao().insertAllStocks(stockEntities)
-        return InvestTakeProfitApplication.roomDb!!.stockDao().getAllStocks()
-
-    }
-
-    //
-    fun updateObservers(parcel: List<com.suai.sergey.investmentportfolio.models.Stock>) {
+        InvestTakeProfitApplication.roomDb!!.stockDao().updatePrice(
+            stockResponse.security!!,
+            stockResponse.price!!.toDouble(),
+            stockResponse.datetime.toString()
+        )
         Log.d(TAG, "UpdateObservers")
         setChanged()
-        notifyObservers(parcel)
+        notifyObservers()
     }
 
-
 }
-
